@@ -1,454 +1,296 @@
-/**
- * Azure Haven Hotel - Main JavaScript
- * Handles interactive functionality and user experience enhancements
- */
+// Hotel Landing Page JavaScript
+// Azure Haven Hotel - Interactive functionality
 
-// DOM Elements
-const navToggle = document.getElementById('navToggle');
-const navMenu = document.getElementById('navMenu');
-const bookingForm = document.getElementById('bookingForm');
-const checkInInput = document.getElementById('checkIn');
-const checkOutInput = document.getElementById('checkOut');
-const guestsSelect = document.getElementById('guests');
-const roomsSelect = document.getElementById('rooms');
-const bookingMessage = document.getElementById('bookingMessage');
-const testimonialsSlider = document.getElementById('testimonialsSlider');
-const testimonialsTrack = document.getElementById('testimonialsTrack');
-const testimonialPrev = document.getElementById('testimonialPrev');
-const testimonialNext = document.getElementById('testimonialNext');
-const testimonialDots = document.getElementById('testimonialDots');
-const header = document.getElementById('header');
-
-// State Management
-let currentTestimonial = 0;
-let isNavOpen = false;
-const testimonialCards = document.querySelectorAll('.testimonial-card');
-
-// Initialize
 document.addEventListener('DOMContentLoaded', function() {
-    initializeNavigation();
-    initializeBooking();
-    initializeTestimonials();
-    initializeScrollEffects();
-    initializeGallery();
-    initializeRoomInteractions();
-    setMinDates();
+    // Initialize all functionality
+    initNavigation();
+    initBookingForm();
+    initTestimonials();
+    initGallery();
+    initSmoothScrolling();
+    initAnimations();
 });
 
-/**
- * Navigation functionality
- */
-function initializeNavigation() {
+// Navigation functionality
+function initNavigation() {
+    const navToggle = document.getElementById('navToggle');
+    const navMenu = document.getElementById('navMenu');
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    // Mobile menu toggle
     if (navToggle && navMenu) {
-        navToggle.addEventListener('click', toggleNavigation);
-        
-        // Close menu when clicking outside
-        document.addEventListener('click', function(e) {
-            if (isNavOpen && !navMenu.contains(e.target) && !navToggle.contains(e.target)) {
-                closeNavigation();
-            }
-        });
-        
-        // Close menu when clicking on nav links
-        const navLinks = navMenu.querySelectorAll('.nav-link');
-        navLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                closeNavigation();
-            });
-        });
-        
-        // Handle keyboard navigation
-        navToggle.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                toggleNavigation();
-            }
-        });
-    }
-}
-
-function toggleNavigation() {
-    isNavOpen = !isNavOpen;
-    
-    if (navMenu) {
-        navMenu.classList.toggle('active');
-    }
-    
-    if (navToggle) {
-        navToggle.classList.toggle('active');
-        navToggle.setAttribute('aria-expanded', isNavOpen);
-    }
-    
-    // Prevent body scroll when menu is open
-    document.body.style.overflow = isNavOpen ? 'hidden' : '';
-}
-
-function closeNavigation() {
-    isNavOpen = false;
-    
-    if (navMenu) {
-        navMenu.classList.remove('active');
-    }
-    
-    if (navToggle) {
-        navToggle.classList.remove('active');
-        navToggle.setAttribute('aria-expanded', 'false');
-    }
-    
-    document.body.style.overflow = '';
-}
-
-/**
- * Booking form functionality
- */
-function initializeBooking() {
-    if (bookingForm) {
-        bookingForm.addEventListener('submit', handleBookingSubmit);
-        
-        // Real-time validation
-        if (checkInInput) {
-            checkInInput.addEventListener('change', validateDates);
-        }
-        
-        if (checkOutInput) {
-            checkOutInput.addEventListener('change', validateDates);
-        }
-        
-        if (guestsSelect) {
-            guestsSelect.addEventListener('change', validateGuests);
-        }
-        
-        if (roomsSelect) {
-            roomsSelect.addEventListener('change', validateRooms);
-        }
-    }
-}
-
-function setMinDates() {
-    const today = new Date();
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    
-    if (checkInInput) {
-        checkInInput.min = today.toISOString().split('T')[0];
-    }
-    
-    if (checkOutInput) {
-        checkOutInput.min = tomorrow.toISOString().split('T')[0];
-    }
-}
-
-function validateDates() {
-    if (!checkInInput || !checkOutInput) return;
-    
-    const checkInDate = new Date(checkInInput.value);
-    const checkOutDate = new Date(checkOutInput.value);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    // Clear previous errors
-    clearBookingErrors();
-    
-    let isValid = true;
-    
-    // Validate check-in date
-    if (checkInInput.value && checkInDate < today) {
-        showFieldError('checkIn', 'Check-in date cannot be in the past');
-        isValid = false;
-    }
-    
-    // Validate check-out date
-    if (checkOutInput.value && checkInInput.value) {
-        if (checkOutDate <= checkInDate) {
-            showFieldError('checkOut', 'Check-out must be after check-in');
-            isValid = false;
-        }
-    }
-    
-    return isValid;
-}
-
-function validateGuests() {
-    if (!guestsSelect) return true;
-    
-    clearBookingErrors();
-    
-    if (guestsSelect.value === '') {
-        showFieldError('guests', 'Please select number of guests');
-        return false;
-    }
-    
-    return true;
-}
-
-function validateRooms() {
-    if (!roomsSelect) return true;
-    
-    clearBookingErrors();
-    
-    if (roomsSelect.value === '') {
-        showFieldError('rooms', 'Please select number of rooms');
-        return false;
-    }
-    
-    return true;
-}
-
-function showFieldError(fieldName, message) {
-    const field = document.getElementById(fieldName);
-    const errorElement = document.getElementById(fieldName + 'Error');
-    
-    if (field && errorElement) {
-        field.classList.add('error');
-        errorElement.textContent = message;
-    }
-}
-
-function clearBookingErrors() {
-    const errorElements = document.querySelectorAll('.booking-error');
-    const inputs = document.querySelectorAll('.booking-input, .booking-select');
-    
-    errorElements.forEach(element => {
-        element.textContent = '';
-    });
-    
-    inputs.forEach(input => {
-        input.classList.remove('error');
-    });
-}
-
-function handleBookingSubmit(e) {
-    e.preventDefault();
-    
-    // Validate all fields
-    const isDatesValid = validateDates();
-    const isGuestsValid = validateGuests();
-    const isRoomsValid = validateRooms();
-    
-    if (!isDatesValid || !isGuestsValid || !isRoomsValid) {
-        showBookingMessage('Please correct the errors above', 'error');
-        return;
-    }
-    
-    // Get form values
-    const formData = {
-        checkIn: checkInInput?.value || '',
-        checkOut: checkOutInput?.value || '',
-        guests: guestsSelect?.value || '',
-        rooms: roomsSelect?.value || ''
-    };
-    
-    // Simulate booking search
-    showBookingMessage('Searching for available rooms...', 'success');
-    
-    setTimeout(() => {
-        const nights = calculateNights(formData.checkIn, formData.checkOut);
-        showBookingMessage(
-            `Found ${formData.rooms} room(s) available for ${nights} night(s) from ${formatDate(formData.checkIn)} to ${formatDate(formData.checkOut)}. Please contact us to complete your booking.`,
-            'success'
-        );
-    }, 1500);
-}
-
-function calculateNights(checkIn, checkOut) {
-    if (!checkIn || !checkOut) return 0;
-    
-    const start = new Date(checkIn);
-    const end = new Date(checkOut);
-    const diffTime = Math.abs(end - start);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
-    return diffDays;
-}
-
-function formatDate(dateString) {
-    if (!dateString) return '';
-    
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric'
-    });
-}
-
-function showBookingMessage(message, type) {
-    if (!bookingMessage) return;
-    
-    bookingMessage.textContent = message;
-    bookingMessage.className = `booking-message ${type}`;
-    bookingMessage.style.display = 'block';
-    
-    // Auto-hide after 5 seconds
-    setTimeout(() => {
-        bookingMessage.style.display = 'none';
-    }, 5000);
-}
-
-/**
- * Testimonials slider functionality
- */
-function initializeTestimonials() {
-    if (!testimonialsSlider || testimonialCards.length === 0) return;
-    
-    // Create dot indicators
-    createTestimonialDots();
-    
-    // Set up navigation buttons
-    if (testimonialPrev) {
-        testimonialPrev.addEventListener('click', () => navigateTestimonials('prev'));
-    }
-    
-    if (testimonialNext) {
-        testimonialNext.addEventListener('click', () => navigateTestimonials('next'));
-    }
-    
-    // Auto-rotate testimonials
-    startTestimonialAutoplay();
-    
-    // Pause autoplay on hover
-    testimonialsSlider.addEventListener('mouseenter', stopTestimonialAutoplay);
-    testimonialsSlider.addEventListener('mouseleave', startTestimonialAutoplay);
-    
-    // Keyboard navigation
-    testimonialsSlider.addEventListener('keydown', function(e) {
-        if (e.key === 'ArrowLeft') {
-            navigateTestimonials('prev');
-        } else if (e.key === 'ArrowRight') {
-            navigateTestimonials('next');
-        }
-    });
-}
-
-function createTestimonialDots() {
-    if (!testimonialDots) return;
-    
-    testimonialCards.forEach((_, index) => {
-        const dot = document.createElement('button');
-        dot.className = 'testimonial-dot';
-        dot.setAttribute('aria-label', `Go to testimonial ${index + 1}`);
-        dot.addEventListener('click', () => goToTestimonial(index));
-        testimonialDots.appendChild(dot);
-    });
-    
-    updateTestimonialDots();
-}
-
-function navigateTestimonials(direction) {
-    const totalTestimonials = testimonialCards.length;
-    
-    if (direction === 'prev') {
-        currentTestimonial = (currentTestimonial - 1 + totalTestimonials) % totalTestimonials;
-    } else {
-        currentTestimonial = (currentTestimonial + 1) % totalTestimonials;
-    }
-    
-    updateTestimonialPosition();
-}
-
-function goToTestimonial(index) {
-    currentTestimonial = index;
-    updateTestimonialPosition();
-}
-
-function updateTestimonialPosition() {
-    if (!testimonialsTrack) return;
-    
-    const offset = -currentTestimonial * 100;
-    testimonialsTrack.style.transform = `translateX(${offset}%)`;
-    updateTestimonialDots();
-}
-
-function updateTestimonialDots() {
-    if (!testimonialDots) return;
-    
-    const dots = testimonialDots.querySelectorAll('.testimonial-dot');
-    dots.forEach((dot, index) => {
-        dot.classList.toggle('active', index === currentTestimonial);
-    });
-}
-
-let testimonialAutoplayInterval;
-
-function startTestimonialAutoplay() {
-    stopTestimonialAutoplay();
-    testimonialAutoplayInterval = setInterval(() => {
-        navigateTestimonials('next');
-    }, 5000);
-}
-
-function stopTestimonialAutoplay() {
-    if (testimonialAutoplayInterval) {
-        clearInterval(testimonialAutoplayInterval);
-    }
-}
-
-/**
- * Scroll effects and header behavior
- */
-function initializeScrollEffects() {
-    if (!header) return;
-    
-    let lastScrollY = window.scrollY;
-    
-    window.addEventListener('scroll', () => {
-        const currentScrollY = window.scrollY;
-        
-        // Add/remove scrolled class for header styling
-        if (currentScrollY > 100) {
-            header.classList.add('scrolled');
-        } else {
-            header.classList.remove('scrolled');
-        }
-        
-        // Hide/show header on scroll
-        if (currentScrollY > lastScrollY && currentScrollY > 300) {
-            header.style.transform = 'translateY(-100%)';
-        } else {
-            header.style.transform = 'translateY(0)';
-        }
-        
-        lastScrollY = currentScrollY;
-    });
-    
-    // Smooth scroll for anchor links
-    const anchorLinks = document.querySelectorAll('a[href^="#"]');
-    anchorLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
-            const target = document.querySelector(href);
+        navToggle.addEventListener('click', function() {
+            const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
             
-            if (target) {
-                e.preventDefault();
-                const headerHeight = header.offsetHeight;
-                const targetPosition = target.offsetTop - headerHeight;
+            navToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            navToggle.setAttribute('aria-expanded', !isExpanded);
+        });
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!navToggle.contains(event.target) && !navMenu.contains(event.target)) {
+                navToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+                navToggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+    }
+    
+    // Close mobile menu when clicking on a link
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            navToggle.classList.remove('active');
+            navMenu.classList.remove('active');
+            navToggle.setAttribute('aria-expanded', 'false');
+        });
+    });
+    
+    // Header scroll effect
+    let lastScrollTop = 0;
+    const header = document.getElementById('header');
+    
+    window.addEventListener('scroll', function() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (header) {
+            if (scrollTop > 100) {
+                header.style.backgroundColor = 'rgba(255, 255, 255, 0.98)';
+                header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+            } else {
+                header.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+                header.style.boxShadow = 'none';
+            }
+        }
+        
+        lastScrollTop = scrollTop;
+    });
+}
+
+// Booking form functionality
+function initBookingForm() {
+    const bookingForm = document.getElementById('bookingForm');
+    const checkInInput = document.getElementById('checkIn');
+    const checkOutInput = document.getElementById('checkOut');
+    const guestsSelect = document.getElementById('guests');
+    const roomsSelect = document.getElementById('rooms');
+    const bookingMessage = document.getElementById('bookingMessage');
+    
+    // Set minimum date to today
+    const today = new Date().toISOString().split('T')[0];
+    if (checkInInput) {
+        checkInInput.setAttribute('min', today);
+    }
+    
+    // Update checkout minimum date when check-in changes
+    if (checkInInput && checkOutInput) {
+        checkInInput.addEventListener('change', function() {
+            const checkInDate = new Date(this.value);
+            const minCheckOut = new Date(checkInDate);
+            minCheckOut.setDate(minCheckOut.getDate() + 1);
+            
+            checkOutInput.setAttribute('min', minCheckOut.toISOString().split('T')[0]);
+            
+            // Clear checkout if it's before the new minimum
+            if (checkOutInput.value && new Date(checkOutInput.value) <= checkInDate) {
+                checkOutInput.value = '';
+            }
+        });
+    }
+    
+    // Form validation and submission
+    if (bookingForm) {
+        bookingForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Clear previous errors
+            clearErrors();
+            
+            // Validate form
+            let isValid = true;
+            
+            // Validate check-in date
+            if (!checkInInput.value) {
+                showError('checkInError', 'Please select a check-in date');
+                isValid = false;
+            }
+            
+            // Validate check-out date
+            if (!checkOutInput.value) {
+                showError('checkOutError', 'Please select a check-out date');
+                isValid = false;
+            } else if (checkInInput.value && new Date(checkOutInput.value) <= new Date(checkInInput.value)) {
+                showError('checkOutError', 'Check-out date must be after check-in date');
+                isValid = false;
+            }
+            
+            // Validate guests
+            if (!guestsSelect.value) {
+                showError('guestsError', 'Please select number of guests');
+                isValid = false;
+            }
+            
+            // Validate rooms
+            if (!roomsSelect.value) {
+                showError('roomsError', 'Please select number of rooms');
+                isValid = false;
+            }
+            
+            if (isValid) {
+                // Show success message
+                showBookingMessage('success', `Searching availability for ${guestsSelect.value} guest${guestsSelect.value > 1 ? 's' : ''} in ${roomsSelect.value} room${roomsSelect.value > 1 ? 's' : ''} from ${formatDate(checkInInput.value)} to ${formatDate(checkOutInput.value)}.`);
                 
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
+                // In a real application, this would make an API call
+                console.log('Booking search:', {
+                    checkIn: checkInInput.value,
+                    checkOut: checkOutInput.value,
+                    guests: guestsSelect.value,
+                    rooms: roomsSelect.value
                 });
             }
         });
+    }
+    
+    // Real-time validation
+    if (checkInInput) {
+        checkInInput.addEventListener('blur', function() {
+            if (!this.value) {
+                showError('checkInError', 'Please select a check-in date');
+            } else {
+                clearError('checkInError');
+            }
+        });
+    }
+    
+    if (checkOutInput) {
+        checkOutInput.addEventListener('blur', function() {
+            if (!this.value) {
+                showError('checkOutError', 'Please select a check-out date');
+            } else if (checkInInput.value && new Date(this.value) <= new Date(checkInInput.value)) {
+                showError('checkOutError', 'Check-out date must be after check-in date');
+            } else {
+                clearError('checkOutError');
+            }
+        });
+    }
+}
+
+// Testimonials slider functionality
+function initTestimonials() {
+    const slider = document.getElementById('testimonialsSlider');
+    const track = document.getElementById('testimonialsTrack');
+    const prevBtn = document.getElementById('testimonialPrev');
+    const nextBtn = document.getElementById('testimonialNext');
+    const dotsContainer = document.getElementById('testimonialDots');
+    
+    if (!slider || !track) return;
+    
+    const cards = track.querySelectorAll('.testimonial-card');
+    if (cards.length === 0) return;
+    
+    let currentIndex = 0;
+    const totalCards = cards.length;
+    
+    // Create dots
+    if (dotsContainer) {
+        for (let i = 0; i < totalCards; i++) {
+            const dot = document.createElement('button');
+            dot.className = 'testimonial-dot';
+            dot.setAttribute('aria-label', `Go to testimonial ${i + 1}`);
+            if (i === 0) dot.classList.add('active');
+            
+            dot.addEventListener('click', function() {
+                goToTestimonial(i);
+            });
+            
+            dotsContainer.appendChild(dot);
+        }
+    }
+    
+    // Navigation functions
+    function goToTestimonial(index) {
+        currentIndex = index;
+        const offset = -index * 100;
+        track.style.transform = `translateX(${offset}%)`;
+        
+        // Update dots
+        const dots = dotsContainer.querySelectorAll('.testimonial-dot');
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === currentIndex);
+        });
+        
+        // Update ARIA live region
+        track.setAttribute('aria-live', 'polite');
+    }
+    
+    function nextTestimonial() {
+        currentIndex = (currentIndex + 1) % totalCards;
+        goToTestimonial(currentIndex);
+    }
+    
+    function prevTestimonial() {
+        currentIndex = (currentIndex - 1 + totalCards) % totalCards;
+        goToTestimonial(currentIndex);
+    }
+    
+    // Button events
+    if (prevBtn) {
+        prevBtn.addEventListener('click', prevTestimonial);
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', nextTestimonial);
+    }
+    
+    // Keyboard navigation
+    slider.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowLeft') {
+            prevTestimonial();
+        } else if (e.key === 'ArrowRight') {
+            nextTestimonial();
+        }
+    });
+    
+    // Auto-rotate (optional)
+    let autoRotateInterval;
+    
+    function startAutoRotate() {
+        autoRotateInterval = setInterval(nextTestimonial, 5000);
+    }
+    
+    function stopAutoRotate() {
+        clearInterval(autoRotateInterval);
+    }
+    
+    // Pause auto-rotate on hover
+    slider.addEventListener('mouseenter', stopAutoRotate);
+    slider.addEventListener('mouseleave', startAutoRotate);
+    
+    // Start auto-rotate
+    startAutoRotate();
+    
+    // Pause when tab is not visible
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            stopAutoRotate();
+        } else {
+            startAutoRotate();
+        }
     });
 }
 
-/**
- * Gallery functionality
- */
-function initializeGallery() {
+// Gallery functionality
+function initGallery() {
     const galleryItems = document.querySelectorAll('.gallery-item');
     
-    galleryItems.forEach(item => {
+    galleryItems.forEach((item, index) => {
         item.addEventListener('click', function() {
-            // Simple lightbox effect could be implemented here
-            // For now, just add a visual feedback
-            this.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                this.style.transform = '';
-            }, 150);
+            // Simple lightbox implementation
+            const caption = this.querySelector('.gallery-caption').textContent;
+            showLightbox(index, caption);
         });
         
-        // Keyboard interaction
+        // Keyboard navigation
         item.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
@@ -456,114 +298,282 @@ function initializeGallery() {
             }
         });
     });
-}
-
-/**
- * Room interactions
- */
-function initializeRoomInteractions() {
-    const roomDetailsButtons = document.querySelectorAll('.room-details');
     
-    roomDetailsButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            const roomCard = this.closest('.room-card');
-            const roomTitle = roomCard.querySelector('.room-title').textContent;
-            
-            // Simple modal or alert for room details
-            showRoomDetails(roomTitle);
-        });
+    // Close lightbox on escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeLightbox();
+        }
     });
 }
 
-function showRoomDetails(roomName) {
-    // Create a simple modal for room details
-    const modal = document.createElement('div');
-    modal.className = 'room-modal';
-    modal.innerHTML = `
-        <div class="room-modal-content">
-            <h3>${roomName}</h3>
-            <p>Experience the ultimate in luxury and comfort. This room features premium amenities, stunning views, and exceptional service.</p>
-            <ul>
-                <li>Luxury bedding and linens</li>
-                <li>Mini bar and coffee station</li>
-                <li>High-speed internet</li>
-                <li>24/7 room service</li>
-                <li>Daily housekeeping</li>
-            </ul>
-            <button class="btn btn-primary close-modal">Close</button>
-        </div>
-    `;
+// Simple lightbox implementation
+function showLightbox(index, caption) {
+    // Create lightbox elements
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.setAttribute('role', 'dialog');
+    lightbox.setAttribute('aria-modal', 'true');
+    lightbox.setAttribute('aria-label', 'Gallery image view');
     
-    // Add modal styles
+    const lightboxContent = document.createElement('div');
+    lightboxContent.className = 'lightbox-content';
+    
+    const image = document.createElement('div');
+    image.className = 'lightbox-image';
+    image.style.background = getGalleryBackground(index);
+    
+    const captionEl = document.createElement('p');
+    captionEl.className = 'lightbox-caption';
+    captionEl.textContent = caption;
+    
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'lightbox-close';
+    closeBtn.innerHTML = '&times;';
+    closeBtn.setAttribute('aria-label', 'Close lightbox');
+    
+    lightboxContent.appendChild(image);
+    lightboxContent.appendChild(captionEl);
+    lightboxContent.appendChild(closeBtn);
+    lightbox.appendChild(lightboxContent);
+    
+    // Add styles
     const style = document.createElement('style');
     style.textContent = `
-        .room-modal {
+        .lightbox {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.8);
+            background-color: rgba(0, 0, 0, 0.9);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 2000;
-            padding: 2rem;
+            padding: 20px;
         }
-        .room-modal-content {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            max-width: 500px;
-            max-height: 80vh;
-            overflow-y: auto;
+        
+        .lightbox-content {
+            max-width: 900px;
+            max-height: 90vh;
+            text-align: center;
         }
-        .room-modal-content h3 {
+        
+        .lightbox-image {
+            height: 70vh;
+            border-radius: 8px;
             margin-bottom: 1rem;
         }
-        .room-modal-content ul {
-            margin: 1rem 0;
+        
+        .lightbox-caption {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
         }
-        .room-modal-content li {
-            margin-bottom: 0.5rem;
+        
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 10px;
         }
-        .close-modal {
-            margin-top: 1.5rem;
+        
+        .lightbox-close:hover {
+            opacity: 0.7;
         }
     `;
     
     document.head.appendChild(style);
-    document.body.appendChild(modal);
+    document.body.appendChild(lightbox);
     
-    // Close modal functionality
-    const closeBtn = modal.querySelector('.close-modal');
-    closeBtn.addEventListener('click', () => {
-        document.body.removeChild(modal);
-        document.head.removeChild(style);
-    });
-    
-    // Close on background click
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            closeBtn.click();
+    // Close events
+    closeBtn.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', function(e) {
+        if (e.target === lightbox) {
+            closeLightbox();
         }
     });
     
-    // Close on escape key
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            closeBtn.click();
-        }
+    // Focus management
+    closeBtn.focus();
+}
+
+function closeLightbox() {
+    const lightbox = document.querySelector('.lightbox');
+    if (lightbox) {
+        lightbox.remove();
+    }
+}
+
+function getGalleryBackground(index) {
+    const backgrounds = [
+        'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)',
+        'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
+        'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
+        'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+        'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'
+    ];
+    return backgrounds[index % backgrounds.length];
+}
+
+// Smooth scrolling for anchor links
+function initSmoothScrolling() {
+    const links = document.querySelectorAll('a[href^="#"]');
+    
+    links.forEach(link => {
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            
+            if (href === '#') return;
+            
+            const target = document.querySelector(href);
+            if (target) {
+                e.preventDefault();
+                
+                const headerHeight = document.getElementById('header')?.offsetHeight || 0;
+                const targetPosition = target.offsetTop - headerHeight - 20;
+                
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+                
+                // Update focus
+                setTimeout(() => {
+                    target.focus({ preventScroll: true });
+                }, 500);
+            }
+        });
     });
 }
 
-/**
- * Utility functions
- */
+// Animation on scroll
+function initAnimations() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+            }
+        });
+    }, observerOptions);
+    
+    // Observe elements for animation
+    const animateElements = document.querySelectorAll('.room-card, .amenity-card, .experience-card, .gallery-item');
+    animateElements.forEach(el => {
+        el.classList.add('animate-element');
+        observer.observe(el);
+    });
+    
+    // Add animation styles
+    const style = document.createElement('style');
+    style.textContent = `
+        .animate-element {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .animate-element.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    `;
+    document.head.appendChild(style);
+}
 
-// Debounce function for performance
+// Utility functions
+function showError(elementId, message) {
+    const errorElement = document.getElementById(elementId);
+    if (errorElement) {
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+    }
+}
+
+function clearError(elementId) {
+    const errorElement = document.getElementById(elementId);
+    if (errorElement) {
+        errorElement.textContent = '';
+        errorElement.style.display = 'none';
+    }
+}
+
+function clearErrors() {
+    const errorElements = document.querySelectorAll('.booking-error');
+    errorElements.forEach(el => {
+        el.textContent = '';
+        el.style.display = 'none';
+    });
+}
+
+function showBookingMessage(type, message) {
+    const messageElement = document.getElementById('bookingMessage');
+    if (messageElement) {
+        messageElement.textContent = message;
+        messageElement.className = `booking-message ${type}`;
+        messageElement.style.display = 'block';
+        
+        // Auto-hide after 5 seconds
+        setTimeout(() => {
+            messageElement.style.display = 'none';
+        }, 5000);
+    }
+}
+
+function formatDate(dateString) {
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString('en-US', options);
+}
+
+// Room detail buttons (placeholder functionality)
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('room-details')) {
+        e.preventDefault();
+        const roomCard = e.target.closest('.room-card');
+        const roomTitle = roomCard.querySelector('.room-title').textContent;
+        
+        // In a real application, this would open a modal or navigate to a detail page
+        console.log(`View details for: ${roomTitle}`);
+        
+        // Simple feedback
+        e.target.textContent = 'Coming Soon';
+        setTimeout(() => {
+            e.target.textContent = 'View Details';
+        }, 2000);
+    }
+});
+
+// Explore dining button
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('cta-button') && e.target.textContent === 'Explore Dining') {
+        e.preventDefault();
+        // Scroll to restaurant section
+        const restaurantSection = document.querySelector('.restaurant-section');
+        if (restaurantSection) {
+            const headerHeight = document.getElementById('header')?.offsetHeight || 0;
+            const targetPosition = restaurantSection.offsetTop - headerHeight - 20;
+            
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+        }
+    }
+});
+
+// Performance optimization - debounce scroll events
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -576,53 +586,18 @@ function debounce(func, wait) {
     };
 }
 
-// Check if element is in viewport
-function isInViewport(element) {
-    const rect = element.getBoundingClientRect();
-    return (
-        rect.top >= 0 &&
-        rect.left >= 0 &&
-        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-    );
-}
+// Apply debounce to scroll events
+const debouncedScroll = debounce(function() {
+    // Scroll-based animations can go here
+}, 10);
 
-// Add fade-in animation to elements as they come into view
-function initializeScrollAnimations() {
-    const animatedElements = document.querySelectorAll('.fade-in, .slide-up');
-    
-    const animateOnScroll = debounce(() => {
-        animatedElements.forEach(element => {
-            if (isInViewport(element)) {
-                element.style.opacity = '1';
-                element.style.transform = 'translateY(0)';
-            }
-        });
-    }, 100);
-    
-    // Set initial styles
-    animatedElements.forEach(element => {
-        element.style.opacity = '0';
-        element.style.transform = 'translateY(20px)';
-        element.style.transition = 'all 0.6s ease';
-    });
-    
-    window.addEventListener('scroll', animateOnScroll);
-    animateOnScroll(); // Check initial state
-}
-
-// Initialize scroll animations
-initializeScrollAnimations();
+window.addEventListener('scroll', debouncedScroll);
 
 // Error handling
 window.addEventListener('error', function(e) {
     console.error('JavaScript error:', e.error);
+    // In production, you might want to send this to an error tracking service
 });
 
-// Performance monitoring
-if ('performance' in window) {
-    window.addEventListener('load', function() {
-        const perfData = performance.getEntriesByType('navigation')[0];
-        console.log('Page load time:', perfData.loadEventEnd - perfData.fetchStart, 'ms');
-    });
-}
+// Console log for debugging (remove in production)
+console.log('Azure Haven Hotel - JavaScript loaded successfully');
