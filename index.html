@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Azure Haven Hotel - Luxury beachfront boutique hotel offering refined living and exceptional hospitality">
+    <title>Azure Haven Hotel | Luxury Beachfront Boutique Hotel</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header / Navigation -->
+    <header class="header" id="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="#" class="logo" aria-label="Azure Haven Hotel Home">
+                    <span class="logo-text">Azure Haven</span>
+                </a>
+                
+                <ul class="nav-menu" id="navMenu" role="menubar">
+                    <li class="nav-item" role="none"><a href="#hero" class="nav-link" role="menuitem">Home</a></li>
+                    <li class="nav-item" role="none"><a href="#rooms" class="nav-link" role="menuitem">Rooms</a></li>
+                    <li class="nav-item" role="none"><a href="#amenities" class="nav-link" role="menuitem">Amenities</a></li>
+                    <li class="nav-item" role="none"><a href="#gallery" class="nav-link" role="menuitem">Gallery</a></li>
+                    <li class="nav-item" role="none"><a href="#location" class="nav-link" role="menuitem">Location</a></li>
+                    <li class="nav-item" role="none"><a href="#footer" class="nav-link" role="menuitem">Contact</a></li>
+                </ul>
+                
+                <a href="#booking" class="btn btn-primary nav-cta" aria-label="Book your stay now">Book Now</a>
+                
+                <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navMenu">
+                    <span class="hamburger"></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-background" aria-hidden="true"></div>
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <h1 class="hero-title">Azure Haven Hotel</h1>
+            <p class="hero-subtitle">Escape to the Extraordinary</p>
+            <p class="hero-description">Experience refined beachfront living, world-class hospitality, and unforgettable moments.</p>
+            <div class="hero-cta">
+                <a href="#booking" class="btn btn-primary btn-large">Book Your Stay</a>
+                <a href="#rooms" class="btn btn-secondary btn-large">Explore Rooms</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Search Widget -->
+    <section class="booking-section" id="booking">
+        <div class="container">
+            <form class="booking-form" id="bookingForm" novalidate>
+                <div class="booking-field">
+                    <label for="checkIn" class="booking-label">Check-in</label>
+                    <input type="date" id="checkIn" name="checkIn" class="booking-input" required aria-required="true">
+                    <span class="booking-error" id="checkInError"></span>
+                </div>
+                
+                <div class="booking-field">
+                    <label for="checkOut" class="booking-label">Check-out</label>
+                    <input type="date" id="checkOut" name="checkOut" class="booking-input" required aria-required="true">
+                    <span class="booking-error" id="checkOutError"></span>
+                </div>
+                
+                <div class="booking-field">
+                    <label for="guests" class="booking-label">Guests</label>
+                    <select id="guests" name="guests" class="booking-select" required aria-required="true">
+                        <option value="">Select</option>
+                        <option value="1">1 Guest</option>
+                        <option value="2" selected>2 Guests</option>
+                        <option value="3">3 Guests</option>
+                        <option value="4">4 Guests</option>
+                        <option value="5">5+ Guests</option>
+                    </select>
+                </div>
+                
+                <div class="booking-field">
+                    <label for="rooms" class="booking-label">Rooms</label>
+                    <select id="rooms" name="rooms" class="booking-select" required aria-required="true">
+                        <option value="">Select</option>
+                        <option value="1" selected>1 Room</option>
+                        <option value="2">2 Rooms</option>
+                        <option value="3">3 Rooms</option>
+                        <option value="4">4+ Rooms</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary booking-submit">Search</button>
+            </form>
+            <div class="booking-message" id="bookingMessage" role="alert" aria-live="polite"></div>
+        </div>
+    </section>
+
+    <!-- Hotel Introduction -->
+    <section class="intro-section">
+        <div class="container">
+            <div class="intro-content">
+                <div class="intro-text">
+                    <h2 class="section-title">Welcome to Azure Haven</h2>
+                    <p class="intro-description">
+                        Nestled along pristine shores, Azure Haven Hotel represents the pinnacle of luxury beachfront living. 
+                        Our boutique hotel combines modern architectural elegance with the timeless beauty of the coast, 
+                        creating an sanctuary where every moment is crafted for your comfort and delight.
+                    </p>
+                    <p class="intro-description">
+                        From our private beach access to world-class dining experiences, every detail has been thoughtfully 
+                        designed to exceed expectations. Whether you seek relaxation, adventure, or simply a moment of 
+                        tranquility, Azure Haven offers an escape like no other.
+                    </p>
+                </div>
+                <div class="intro-image" aria-hidden="true"></div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number">120</span>
+                    <span class="stat-label">Luxury Rooms</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">3</span>
+                    <span class="stat-label">Restaurants</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">2</span>
+                    <span class="stat-label">Infinity Pools</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">24/7</span>
+                    <span class="stat-label">Concierge</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon" aria-label="Private Beach"></span>
+                    <span class="stat-label">Private Beach</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Rooms -->
+    <section class="rooms-section" id="rooms">
+        <div class="container">
+            <h2 class="section-title">Featured Rooms & Suites</h2>
+            <p class="section-subtitle">Discover your perfect sanctuary</p>
+            
+            <div class="rooms-grid">
+                <!-- Deluxe Ocean Room -->
+                <article class="room-card">
+                    <div class="room-image" aria-label="Deluxe Ocean Room"></div>
+                    <div class="room-content">
+                        <h3 class="room-title">Deluxe Ocean Room</h3>
+                        <p class="room-description">Wake up to breathtaking ocean views in this elegantly appointed room designed for comfort and tranquility.</p>
+                        <ul class="room-amenities">
+                            <li>King Bed</li>
+                            <li>2 Guests</li>
+                            <li>Ocean View</li>
+                            <li>38 m²</li>
+                        </ul>
+                        <div class="room-footer">
+                            <span class="room-price">From $299/night</span>
+                            <div class="room-actions">
+                                <button class="btn btn-outline room-details">View Details</button>
+                                <a href="#booking" class="btn btn-primary room-book">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Premium Beach Suite -->
+                <article class="room-card">
+                    <div class="room-image room-image-2" aria-label="Premium Beach Suite"></div>
+                    <div class="room-content">
+                        <h3 class="room-title">Premium Beach Suite</h3>
+                        <p class="room-description">Spacious suite with private terrace offering direct beach access and stunning sunset views.</p>
+                        <ul class="room-amenities">
+                            <li>King Bed</li>
+                            <li>2 Guests</li>
+                            <li>Private Terrace</li>
+                            <li>65 m²</li>
+                        </ul>
+                        <div class="room-footer">
+                            <span class="room-price">From $499/night</span>
+                            <div class="room-actions">
+                                <button class="btn btn-outline room-details">View Details</button>
+                                <a href="#booking" class="btn btn-primary room-book">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Azure Presidential Suite -->
+                <article class="room-card">
+                    <div class="room-image room-image-3" aria-label="Azure Presidential Suite"></div>
+                    <div class="room-content">
+                        <h3 class="room-title">Azure Presidential Suite</h3>
+                        <p class="room-description">The ultimate luxury experience with private pool, panoramic ocean views, and exclusive butler service.</p>
+                        <ul class="room-amenities">
+                            <li>King Bed</li>
+                            <li>4 Guests</li>
+                            <li>Private Pool</li>
+                            <li>120 m²</li>
+                        </ul>
+                        <div class="room-footer">
+                            <span class="room-price">From $999/night</span>
+                            <div class="room-actions">
+                                <button class="btn btn-outline room-details">View Details</button>
+                                <a href="#booking" class="btn btn-primary room-book">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Amenities -->
+    <section class="amenities-section" id="amenities">
+        <div class="container">
+            <h2 class="section-title">World-Class Amenities</h2>
+            <p class="section-subtitle">Everything you need for an unforgettable stay</p>
+            
+            <div class="amenities-grid">
+                <div class="amenity-card">
+                    <div class="amenity-icon" aria-label="Private Beach"></div>
+                    <h3 class="amenity-title">Private Beach</h3>
+                    <p class="amenity-description">Exclusive access to pristine sands and crystal-clear waters</p>
+                </div>
+                
+                <div class="amenity-card">
+                    <div class="amenity-icon amenity-icon-pool" aria-label="Infinity Pool"></div>
+                    <h3 class="amenity-title">Infinity Pool</h3>
+                    <p class="amenity-description">Stunning pool blending seamlessly with the horizon</p>
+                </div>
+                
+                <div class="amenity-card">
+                    <div class="amenity-icon amenity-icon-spa" aria-label="Spa & Wellness"></div>
+                    <h3 class="amenity-title">Spa & Wellness</h3>
+                    <p class="amenity-description">Rejuvenating treatments and holistic wellness programs</p>
+                </div>
+                
+                <div class="amenity-card">
+                    <div class="amenity-icon amenity-icon-dining" aria-label="Fine Dining"></div>
+                    <h3 class="amenity-title">Fine Dining</h3>
+                    <p class="amenity-description">Exquisite cuisine crafted by world-renowned chefs</p>
+                </div>
+                
+                <div class="amenity-card">
+                    <div class="amenity-icon amenity-icon-fitness" aria-label="Fitness Center"></div>
+                    <h3 class="amenity-title">Fitness Center</h3>
+                    <p class="amenity-description">State-of-the-art equipment and personal training</p>
+                </div>
+                
+                <div class="amenity-card">
+                    <div class="amenity-icon amenity-icon-transfer" aria-label="Airport Transfer"></div>
+                    <h3 class="amenity-title">Airport Transfer</h3>
+                    <p class="amenity-description">Complimentary luxury vehicle service</p>
+                </div>
+                
+                <div class="amenity-card">
+                    <div class="amenity-icon amenity-icon-wifi" aria-label="High-Speed Wi-Fi"></div>
+                    <h3 class="amenity-title">High-Speed Wi-Fi</h3>
+                    <p class="amenity-description">Complimentary high-speed internet throughout</p>
+                </div>
+                
+                <div class="amenity-card">
+                    <div class="amenity-icon amenity-icon-concierge" aria-label="24/7 Concierge"></div>
+                    <h3 class="amenity-title">24/7 Concierge</h3>
+                    <p class="amenity-description">Dedicated team for personalized assistance</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experiences -->
+    <section class="experiences-section">
+        <div class="container">
+            <h2 class="section-title">Curated Experiences</h2>
+            <p class="section-subtitle">Beyond accommodation—create lasting memories</p>
+            
+            <div class="experiences-grid">
+                <article class="experience-card">
+                    <div class="experience-image experience-image-1" aria-label="Spa Treatments"></div>
+                    <div class="experience-content">
+                        <h3 class="experience-title">Spa Treatments</h3>
+                        <p class="experience-description">Indulge in rejuvenating therapies using premium organic products</p>
+                    </div>
+                </article>
+                
+                <article class="experience-card">
+                    <div class="experience-image experience-image-2" aria-label="Private Beach Dining"></div>
+                    <div class="experience-content">
+                        <h3 class="experience-title">Private Beach Dining</h3>
+                        <p class="experience-description">Romantic candlelit dinners under the stars on our private beach</p>
+                    </div>
+                </article>
+                
+                <article class="experience-card">
+                    <div class="experience-image experience-image-3" aria-label="Sunset Cruises"></div>
+                    <div class="experience-content">
+                        <h3 class="experience-title">Sunset Cruises</h3>
+                        <p class="experience-description">Exclusive yacht excursions with champagne and canapés</p>
+                    </div>
+                </article>
+                
+                <article class="experience-card">
+                    <div class="experience-image experience-image-4" aria-label="Water Activities"></div>
+                    <div class="experience-content">
+                        <h3 class="experience-title">Water Activities</h3>
+                        <p class="experience-description">Snorkeling, paddleboarding, and jet skiing adventures</p>
+                    </div>
+                </article>
+                
+                <article class="experience-card">
+                    <div class="experience-image experience-image-5" aria-label="Cultural Tours"></div>
+                    <div class="experience-content">
+                        <h3 class="experience-title">Cultural Tours</h3>
+                        <p class="experience-description">Guided excursions to local landmarks and hidden gems</p>
+                    </div>
+                </article>
+                
+                <article class="experience-card">
+                    <div class="experience-image experience-image-6" aria-label="Chef Experiences"></div>
+                    <div class="experience-content">
+                        <h3 class="experience-title">Chef Experiences</h3>
+                        <p class="experience-description">Private cooking classes with our executive chef</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery -->
+    <section class="gallery-section" id="gallery">
+        <div class="container">
+            <h2 class="section-title">Gallery</h2>
+            <p class="section-subtitle">A glimpse into paradise</p>
+            
+            <div class="gallery-grid">
+                <figure class="gallery-item gallery-item-hotel" tabindex="0" role="button" aria-label="View hotel image">
+                    <div class="gallery-image" aria-hidden="true"></div>
+                    <figcaption class="gallery-caption">Hotel</figcaption>
+                </figure>
+                
+                <figure class="gallery-item gallery-item-rooms" tabindex="0" role="button" aria-label="View rooms image">
+                    <div class="gallery-image" aria-hidden="true"></div>
+                    <figcaption class="gallery-caption">Rooms</figcaption>
+                </figure>
+                
+                <figure class="gallery-item gallery-item-pool" tabindex="0" role="button" aria-label="View pool image">
+                    <div class="gallery-image" aria-hidden="true"></div>
+                    <figcaption class="gallery-caption">Pool</figcaption>
+                </figure>
+                
+                <figure class="gallery-item gallery-item-beach" tabindex="0" role="button" aria-label="View beach image">
+                    <div class="gallery-image" aria-hidden="true"></div>
+                    <figcaption class="gallery-caption">Beach</figcaption>
+                </figure>
+                
+                <figure class="gallery-item gallery-item-restaurant" tabindex="0" role="button" aria-label="View restaurant image">
+                    <div class="gallery-image" aria-hidden="true"></div>
+                    <figcaption class="gallery-caption">Restaurants</figcaption>
+                </figure>
+                
+                <figure class="gallery-item gallery-item-spa" tabindex="0" role="button" aria-label="View spa image">
+                    <div class="gallery-image" aria-hidden="true"></div>
+                    <figcaption class="gallery-caption">Spa</figcaption>
+                </figure>
+            </div>
+        </div>
+    </section>
+
+    <!-- Restaurant -->
+    <section class="restaurant-section">
+        <div class="container">
+            <div class="restaurant-content">
+                <div class="restaurant-image" aria-hidden="true"></div>
+                <div class="restaurant-text">
+                    <h2 class="section-title">Azure Restaurant</h2>
+                    <p class="restaurant-description">
+                        Mediterranean cuisine inspired by fresh local ingredients, served with panoramic views of the sea. 
+                        Our culinary team crafts each dish with passion, drawing from coastal traditions and contemporary techniques.
+                    </p>
+                    <div class="restaurant-hours">
+                        <h3 class="hours-title">Opening Hours</h3>
+                        <p class="hours-text">Breakfast: 7:00 AM - 10:30 AM</p>
+                        <p class="hours-text">Lunch: 12:00 PM - 3:00 PM</p>
+                        <p class="hours-text">Dinner: 6:00 PM - 11:00 PM</p>
+                    </div>
+                    <a href="#booking" class="btn btn-primary">Explore Dining</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials-section">
+        <div class="container">
+            <h2 class="section-title">Guest Reviews</h2>
+            <p class="section-subtitle">What our guests say about their stay</p>
+            
+            <div class="testimonials-slider" id="testimonialsSlider">
+                <div class="testimonials-track" id="testimonialsTrack">
+                    <article class="testimonial-card">
+                        <div class="testimonial-rating" aria-label="5 out of 5 stars">★★★★★</div>
+                        <blockquote class="testimonial-text">
+                            "One of the most beautiful hotels we've stayed in. The service, location and rooms were exceptional. 
+                            The private beach was the highlight of our trip."
+                        </blockquote>
+                        <footer class="testimonial-author">
+                            <span class="author-name">Sophia M.</span>
+                            <span class="author-location">London, UK</span>
+                        </footer>
+                    </article>
+                    
+                    <article class="testimonial-card">
+                        <div class="testimonial-rating" aria-label="5 out of 5 stars">★★★★★</div>
+                        <blockquote class="testimonial-text">
+                            "From the moment we arrived, we felt like royalty. The attention to detail, the stunning views, 
+                            and the incredible dining experience exceeded all expectations."
+                        </blockquote>
+                        <footer class="testimonial-author">
+                            <span class="author-name">James & Emily R.</span>
+                            <span class="author-location">Sydney, Australia</span>
+                        </footer>
+                    </article>
+                    
+                    <article class="testimonial-card">
+                        <div class="testimonial-rating" aria-label="5 out of 5 stars">★★★★★</div>
+                        <blockquote class="testimonial-text">
+                            "The Presidential Suite was absolutely breathtaking. Private pool, ocean views, and impeccable 
+                            service. This is what luxury travel should be."
+                        </blockquote>
+                        <footer class="testimonial-author">
+                            <span class="author-name">Michael T.</span>
+                            <span class="author-location">New York, USA</span>
+                        </footer>
+                    </article>
+                    
+                    <article class="testimonial-card">
+                        <div class="testimonial-rating" aria-label="5 out of 5 stars">★★★★★</div>
+                        <blockquote class="testimonial-text">
+                            "We celebrated our anniversary here and it was magical. The sunset cruise and private beach 
+                            dining created memories we'll cherish forever."
+                        </blockquote>
+                        <footer class="testimonial-author">
+                            <span class="author-name">Aisha & David K.</span>
+                            <span class="author-location">Dubai, UAE</span>
+                        </footer>
+                    </article>
+                </div>
+                
+                <button class="testimonial-nav testimonial-prev" id="testimonialPrev" aria-label="Previous testimonial">
+                    <span aria-hidden="true">←</span>
+                </button>
+                <button class="testimonial-nav testimonial-next" id="testimonialNext" aria-label="Next testimonial">
+                    <span aria-hidden="true">→</span>
+                </button>
+                
+                <div class="testimonial-dots" id="testimonialDots"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location -->
+    <section class="location-section" id="location">
+        <div class="container">
+            <h2 class="section-title">Location</h2>
+            <p class="section-subtitle">Perfectly positioned for exploration</p>
+            
+            <div class="location-content">
+                <div class="location-info">
+                    <div class="location-item">
+                        <h3 class="location-title">Hotel Location</h3>
+                        <p class="location-text">123 Azure Coast Boulevard<br>Marina District, Coastal City</p>
+                    </div>
+                    
+                    <div class="location-item">
+                        <h3 class="location-title">Nearby Attractions</h3>
+                        <ul class="location-list">
+                            <li>Marina District — 5 minutes</li>
+                            <li>Historic Old Town — 15 minutes</li>
+                            <li>Shopping Precinct — 10 minutes</li>
+                            <li>Golf Club — 20 minutes</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="location-item">
+                        <h3 class="location-title">Transportation</h3>
+                        <ul class="location-list">
+                            <li>International Airport — 15 minutes</li>
+                            <li>Train Station — 10 minutes</li>
+                            <li>Direct private beach access</li>
+                            <li>Complimentary airport transfer</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="location-map" role="img" aria-label="Map showing hotel location"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">Your Escape Awaits</h2>
+                <p class="cta-description">Discover unforgettable beachfront luxury at Azure Haven.</p>
+                <a href="#booking" class="btn btn-primary btn-large cta-button">Book Your Stay</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <span class="logo-text">Azure Haven</span>
+                    <p class="footer-description">Luxury beachfront boutique hotel offering refined living and exceptional hospitality.</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link" aria-label="Facebook">FB</a>
+                        <a href="#" class="social-link" aria-label="Instagram">IG</a>
+                        <a href="#" class="social-link" aria-label="Twitter">TW</a>
+                        <a href="#" class="social-link" aria-label="LinkedIn">LI</a>
+                    </div>
+                </div>
+                
+                <div class="footer-nav">
+                    <h3 class="footer-title">Quick Links</h3>
+                    <nav>
+                        <ul class="footer-links">
+                            <li><a href="#rooms">Rooms</a></li>
+                            <li><a href="#amenities">Amenities</a></li>
+                            <li><a href="#gallery">Gallery</a></li>
+                            <li><a href="#location">Location</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                
+                <div class="footer-nav">
+                    <h3 class="footer-title">Experiences</h3>
+                    <nav>
+                        <ul class="footer-links">
+                            <li><a href="#">Dining</a></li>
+                            <li><a href="#">Spa</a></li>
+                            <li><a href="#">Activities</a></li>
+                            <li><a href="#">Events</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                
+                <div class="footer-contact">
+                    <h3 class="footer-title">Contact Us</h3>
+                    <address class="footer-address">
+                        <p>123 Azure Coast Boulevard</p>
+                        <p>Marina District, Coastal City</p>
+                        <p><a href="tel:+1234567890" class="footer-link">+1 (234) 567-890</a></p>
+                        <p><a href="mailto:info@azurehaven.com" class="footer-link">info@azurehaven.com</a></p>
+                    </address>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="footer-copyright">&copy; 2024 Azure Haven Hotel. All rights reserved.</p>
+                <nav class="footer-legal">
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <span class="footer-separator">|</span>
+                    <a href="#" class="footer-link">Terms & Conditions</a>
+                </nav>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
